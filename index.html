@@ -40,37 +40,42 @@
             background-image: url("https://i.ibb.co/zJ4msXv/1.png");
             background-size: cover;
             background-position: center;
-            border-collapse: collapse;
-            table-layout: fixed;
-            width: 100%;
-            max-width: 1000px;
-            height: 900px;
+            width: 1000px;
+            height: 600px;
             border: 2px solid rgb(10, 10, 10);
             outline: 4px solid rgb(53, 51, 56);
-            display: block;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            position: relative;
         }
 
         .cell {
-            width: 10%;
-            height: 150px;
-            border: 1px solid RGBA(0, 0, 0, 0.4);
+            border: 1px solid RGBA(255, 255, 255, 0.3);
             background-repeat: no-repeat;
-            box-sizing: border-box;
+            background-size: contain;
+            background-position: center;
         }
 
         #character-wrapper {
-            position: relative;
-            bottom: 75px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
 
         #character {
-            height: 150px;
-            width: 100px;
             position: absolute;
+            width: 100px;
+            height: 100px;
             background-image: url("https://i.ibb.co/bMn5drn8/image.png");
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
 
         .move {
@@ -80,7 +85,7 @@
         }
 
         .move-picture {
-            height: 150px;
+            height: 100px;
             width: 100px;
         }
 
@@ -109,6 +114,7 @@
             text-align: center;
             cursor: pointer;
             margin: 5px;
+            user-select: none;
         }
 
         #buttons {
@@ -120,20 +126,34 @@
         }
 
         #sign-field {
-            border-collapse: collapse;
-            table-layout: fixed;
             text-align: center;
             background-color: rgb(100, 100, 113);
             color: black;
             margin: 10px auto;
+            padding: 10px;
+            border: 2px solid rgb(0, 0, 0);
+            outline: 4px solid rgb(38, 37, 40);
+        }
+
+        .mini-map {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(6, 30px);
+            gap: 1px;
+            margin: 10px auto;
+            justify-content: center;
         }
 
         .little-cell {
-            display: inline-block;
             width: 30px;
             height: 30px;
-            border: 0.5px solid RGBA(0, 0, 0, 0.7);
+            border: 1px solid RGBA(0, 0, 0, 0.7);
             cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
         }
 
         .free {
@@ -151,6 +171,7 @@
         .header {
             font-size: 16pt;
             font-weight: bold;
+            margin-bottom: 10px;
         }
 
         #chat {
@@ -158,32 +179,29 @@
         }
 
         #replay-button {
-            padding: 10px;
+            padding: 10px 20px;
             background-color: rgb(57, 57, 69);
             border: 2px solid rgb(0, 0, 0);
             outline: 4px solid rgb(38, 37, 40);
             display: inline-block;
             margin-top: 10px;
             cursor: pointer;
+            text-align: center;
         }
 
-        #full-health, #half-health, #empty-health {
-            height: 50px;
-            width: 50px;
-            background-size: 50px 50px;
-            margin: 0 auto;
+        #health-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
         }
 
-        #full-health {
-            background-image: url("https://via.placeholder.com/50/00ff00/000000?text=♥");
-        }
-
-        #half-health {
-            background-image: url("https://via.placeholder.com/50/ffff00/000000?text=♥");
-        }
-
-        #empty-health {
-            background-image: url("https://via.placeholder.com/50/ff0000/000000?text=♥");
+        .health-icon {
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
 
         #chat {
@@ -194,6 +212,7 @@
             background-color: rgb(32, 32, 39);
             padding: 20px;
             box-sizing: border-box;
+            min-height: 80px;
         }
 
         #counter {
@@ -211,6 +230,7 @@
 
         #to-main-page {
             margin-bottom: 25px;
+            padding: 0 20px;
         }
 
         /* Мобильная адаптация */
@@ -226,36 +246,33 @@
             }
             
             #field {
-                height: 600px;
+                width: 100%;
+                height: 60vw;
+                max-height: 400px;
             }
             
             .cell {
-                height: 100px;
+                /* Размеры рассчитываются автоматически grid */
             }
             
             #character {
-                height: 100px;
-                width: 66px;
-            }
-            
-            #character-wrapper {
-                bottom: 50px;
-            }
-            
-            .move-picture {
-                height: 100px;
-                width: 66px;
-            }
-            
-            .move-name {
-                bottom: 28px;
-                left: 2px;
-                width: 62px;
-                font-size: 9px;
+                width: 16.66%;
+                height: 16.66%;
             }
             
             body {
                 font-size: 12pt;
+            }
+            
+            .mini-map {
+                grid-template-columns: repeat(10, 20px);
+                grid-template-rows: repeat(6, 20px);
+            }
+            
+            .little-cell {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
             }
         }
     </style>
@@ -269,10 +286,16 @@
         <div id="game-container">
             <div id="left-container">
                 <div id="field">
-                    <div id="character-wrapper">
-                        <div id="character"></div>
+                    <!-- Сетка 6x10 клеток -->
+                    <div v-for="(row, rowIndex) in 6" :key="rowIndex" class="cell-row">
+                        <div v-for="(col, colIndex) in 10" 
+                             :key="colIndex" 
+                             class="cell"
+                             @click="mouseMove($event)"></div>
                     </div>
-                    <!-- Игровое поле будет генерироваться Vue.js -->
+                    <div id="character-wrapper">
+                        <div id="character" :style="characterStyle"></div>
+                    </div>
                 </div>
             </div>
             
@@ -282,17 +305,18 @@
                     <div id="message">{{ message }}</div>
                 </div>
                 
-                <div id="health">
-                    <div class="header">Здоровье:</div>
-                    <div v-if="lifes >= 1" id="full-health"></div>
-                    <div v-else-if="lifes >= 0.5" id="half-health"></div>
-                    <div v-else id="empty-health"></div>
+                <div class="header">Здоровье:</div>
+                <div id="health-container">
+                    <div v-if="lifes >= 1" class="health-icon" style="background-image: url('https://via.placeholder.com/40/00ff00/000000?text=♥')"></div>
+                    <div v-else-if="lifes >= 0.5" class="health-icon" style="background-image: url('https://via.placeholder.com/40/ffff00/000000?text=♥')"></div>
+                    <div v-else class="health-icon" style="background-image: url('https://via.placeholder.com/40/ff0000/000000?text=♥')"></div>
                 </div>
                 
                 <div id="counter">
                     <div class="header">Побед: {{ wins }}</div>
                 </div>
                 
+                <div class="header">Инструменты:</div>
                 <div id="buttons">
                     <div class="button">1</div>
                     <div class="button">2</div>
@@ -304,10 +328,19 @@
                 
                 <div id="sign-field">
                     <div class="header">Карта:</div>
-                    <!-- Мини-карта будет генерироваться Vue.js -->
+                    <div class="mini-map">
+                        <div v-for="(row, rowIndex) in 6" :key="rowIndex">
+                            <div v-for="(col, colIndex) in 10" 
+                                 :key="colIndex" 
+                                 class="little-cell"
+                                 @click="markCell($event)"></div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div id="replay-button" @click="replay">Перезапуск</div>
+                <div style="text-align: center;">
+                    <div id="replay-button" @click="replay">Перезапуск</div>
+                </div>
             </div>
         </div>
     </div>
@@ -317,9 +350,7 @@
         import {createApp} from "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js"
 
         //КОМПОНЕНТА
-
         const app = createApp({
-
             data() {
                 return {
                     you: {
@@ -337,41 +368,42 @@
                 };
             },
 
-            methods: {
+            computed: {
+                characterStyle() {
+                    return {
+                        transform: `translate(${this.you.x * 100}px, ${this.you.y * 100}px)`,
+                        width: '100px',
+                        height: '100px'
+                    };
+                }
+            },
 
+            methods: {
+                // ... все ваши методы остаются такими же ...
                 replay() {
                     this.lifes = 1;
                     this.generateField();
                     this.generateMarkedField();
-                    document.querySelector("#field").style.background = "url('https://i.ibb.co/zJ4msXv/1.png')";
-                    this.you = {
-                        x: 0,
-                        y: 0
-                    };
+                    this.you = { x: 0, y: 0 };
                     if (this.isEnd) {
                         this.message = "Пожалуйста, не падайте больше."
-                    } else
+                    } else {
                         this.message = "Ура! Следующая карта...";
+                    }
                     this.isEnd = false;
                     this.isWin = false;
-                    const littleCells = [...document.querySelectorAll(".little-cell")];
-                    littleCells.forEach( (cell) => {
-                        cell.className = "little-cell";
-                        cell.innerHTML = "";
-                    }
-                    );
-                    const cells = [...document.querySelectorAll(".cell")];
-                    cells.forEach( (cell) => {
-                        cell.className = "cell";
-                    }
-                    );
+                    
+                    const littleCells = document.querySelectorAll('.little-cell');
+                    littleCells.forEach(cell => {
+                        cell.className = 'little-cell';
+                        cell.innerHTML = '';
+                    });
                 },
 
                 countBombs() {
                     let count = 0;
                     let chance;
                     let alert = false;
-                    const field = [...document.querySelectorAll(".cell")]
                     for (let i of [-1, 0, 1]) {
                         for (let j of [-1, 0, 1]) {
                             try {
@@ -379,17 +411,10 @@
                                     count++;
                                     chance = Math.random() * 100;
                                     if (chance <= 10 && !alert) {
-                                        let alertPosition = (this.you.y + i) * 10 + this.you.x + j;
-                                        field[alertPosition].style.backgroundImage = "url('alert.png')";
                                         alert = true;
-                                        setTimeout( () => {
-                                            field[alertPosition].style.backgroundImage = "none";
-                                        }
-                                        , 2500);
                                     }
                                 }
                             } catch (error) {}
-                            ;
                         }
                     }
                     const scenarios = ["Вы ничего не слышите.", "едва различимый", "тихий", "приглушённый", "громкий", "очень громкий"];
@@ -411,7 +436,6 @@
                         } else {
                             this.isEnd = true;
                             this.message = "Вы наступили на опасную клетку и упали!"
-                            document.querySelector("#field").style.background = "black";
                         }
                         this.lifes--;
                         return true;
@@ -432,66 +456,51 @@
 
                 selectButton(button) {
                     if (this.selectedButton != button && this.selectedButton != null) {
-                        this.selectedButton.className = "button unchecked";
+                        this.selectedButton.className = "button";
                     }
                     this.selectedButton = button;
                     this.selectedButton.className = "button checked";
                 },
 
-                markCell(cell) {
+                markCell(event) {
+                    const cell = event.currentTarget;
                     let text;
                     if (this.selectedButton != null) {
                         text = this.selectedButton.innerHTML;
-                    } else
-                        return;
-                    const field = [...document.querySelectorAll(".little-cell")]
-                    const cellPosition = field.indexOf(cell);
-                    const cells = [...document.querySelectorAll(".cell")];
-                    let scenarios = [ () => {
-                        cell.innerHTML = "<div style = 'position: relative; top: 5px;'>" + text + "</div>";
-                        cell.className = "little-cell free"
-                        cells[cellPosition].className = "cell free";
-                    }
-                    , () => {
+                    } else return;
+
+                    const cells = Array.from(document.querySelectorAll('.little-cell'));
+                    const cellIndex = cells.indexOf(cell);
+                    const row = Math.floor(cellIndex / 10);
+                    const col = cellIndex % 10;
+
+                    if (!isNaN(parseInt(text))) {
+                        cell.innerHTML = text;
+                        cell.className = "little-cell free";
+                    } else if (text == "Переход") {
                         cell.innerHTML = "";
-                        cell.className = "little-cell little-move"
-                        cells[cellPosition].className = "cell little-move";
-                    }
-                    , () => {
-                        cell.innerHTML = "";
-                        cell.className = "little-cell bomb"
-                        cells[cellPosition].className = "cell bomb";
-                    }
-                    , () => {
+                        cell.className = "little-cell little-move";
+                    } else if (text == "Мина") {
+                        cell.innerHTML = "💣";
+                        cell.className = "little-cell bomb";
+                    } else {
                         cell.innerHTML = "";
                         cell.className = "little-cell";
-                        cells[cellPosition].className = "cell";
                     }
-                    ];
-                    if (!isNaN(parseInt(text))) {
-                        scenarios[0]();
-                    } else if (text == "Переход") {
-                        scenarios[1]();
-                    } else if (text == "Мина") {
-                        scenarios[2]();
-                    } else {
-                        scenarios[3]();
-                    }
+
+                    // Обновляем markedField
                     if (text == "Мина") {
-                        this.markedField[Math.trunc(cellPosition / 10)][cellPosition % 10] = 1;
-                        this.isWin = this.checkIfWin();
-                        if (this.isWin) {
-                            if (this.lifes == 1) {
-                                this.wins++;
-                            } else
-                                this.wins += 0.5;
-                        }
+                        this.markedField[row][col] = 1;
                     } else if (text == "Очистить") {
-                        this.markedField[Math.trunc(cellPosition / 10)][cellPosition % 10] = 0;
-                        this.isWin = this.checkIfWin();
+                        this.markedField[row][col] = 0;
                     } else if (text == "Переход") {
-                        this.markedField[Math.trunc(cellPosition / 10)][cellPosition % 10] = -1;
-                        this.isWin = this.checkIfWin();
+                        this.markedField[row][col] = -1;
+                    }
+
+                    this.isWin = this.checkIfWin();
+                    if (this.isWin) {
+                        this.wins += this.lifes == 1 ? 1 : 0.5;
+                        this.message = "Поздравляем! Вы выиграли!";
                     }
                 },
 
@@ -501,151 +510,84 @@
 
                 generateMarkedField() {
                     this.markedField = [];
-                    let template = [];
                     for (let i = 0; i < 6; i++) {
+                        let row = [];
                         for (let j = 0; j < 10; j++) {
-                            template.push(0)
+                            row.push(0);
                         }
-                        this.markedField.push(template);
-                        template = [];
+                        this.markedField.push(row);
                     }
                     this.markedField[5][0] = -1;
                     this.markedField[3][9] = -1;
                 },
 
                 generateField() {
-                    this.field = [];
-                    for (let i = 0; i < 55; i++)
-                        this.field.push(0);
+                    let flatField = [];
+                    for (let i = 0; i < 60; i++) flatField.push(0);
+                    
                     let bombs = this.generateBombsCount();
                     while (bombs > 0) {
-                        bombs--;
-                        this.field[Math.floor(Math.random() * 55)] = 1;
-                    }
-                    for (let i = 0; i < 3; i++) {
-                        this.field.splice(0, 0, 0);
-                    }
-                    this.field.splice(49, 0, -1);
-                    this.field.splice(39, 0, -1);
-                    let subarray = [];
-                    for (let i = 0; i < 6; i++)
-                        subarray[i] = this.field.slice((i * 10), (i * 10) + 10);
-                    this.field = subarray;
-                },
-
-                mouseMove(event) {
-                    if (this.isEnd || this.isWin) {
-                        return;
-                    }
-                    let cells = [...document.querySelectorAll(".cell")];
-                    let subarray = [];
-                    for (let i = 0; i < 6; i++)
-                        subarray[i] = cells.slice((i * 10), (i * 10) + 10);
-                    cells = subarray;
-                    for (let i of [-1, 0, 1]) {
-                        for (let j of [-1, 0, 1]) {
-                            try {
-                                if (cells[this.you.y + i][this.you.x + j] == event.target && (JSON.stringify(this.you) != '{"x": 0, "y": 5}' || JSON.stringify(this.you) != '{"x": 9, "y": 3}')) {
-                                    this.you.y += i;
-                                    this.you.x += j;
-                                    let dangerous = this.checkIfDangerous();
-                                    if (!dangerous) {
-                                        let[bombs,sound] = this.countBombs();
-                                        this.message = sound + " [" + bombs + "]"
-                                    }
-                                }
-                            } catch (error) {}
-                            ;
+                        let pos = Math.floor(Math.random() * 60);
+                        if (flatField[pos] === 0) {
+                            flatField[pos] = 1;
+                            bombs--;
                         }
+                    }
+
+                    // Добавляем переходы
+                    flatField[50] = -1; // [0][5] в старой системе
+                    flatField[39] = -1; // [9][3] в старой системе
+
+                    // Преобразуем в 2D массив 6x10
+                    this.field = [];
+                    for (let i = 0; i < 6; i++) {
+                        this.field.push(flatField.slice(i * 10, (i + 1) * 10));
                     }
                 },
 
                 move(event) {
-                    try {
-                        if (this.isEnd || this.isWin) {
-                            return;
+                    if (this.isEnd || this.isWin) return;
+
+                    const keyMap = {
+                        "KeyW": [0, -1], "KeyS": [0, 1],
+                        "KeyA": [-1, 0], "KeyD": [1, 0],
+                        "KeyQ": [-1, -1], "KeyE": [1, -1],
+                        "KeyZ": [-1, 1], "KeyX": [1, 1]
+                    };
+
+                    const vector = keyMap[event.code];
+                    if (!vector) return;
+
+                    const newX = this.you.x + vector[0];
+                    const newY = this.you.y + vector[1];
+
+                    if (newX >= 0 && newX < 10 && newY >= 0 && newY < 6) {
+                        this.you.x = newX;
+                        this.you.y = newY;
+                        
+                        const dangerous = this.checkIfDangerous();
+                        if (!dangerous) {
+                            const [bombs, sound] = this.countBombs();
+                            this.message = sound + " [" + bombs + "]";
                         }
-                        const key = event.code;
-                        const vector = {
-                            "KeyW": [0, -1],
-                            "KeyA": [-1, 0],
-                            "KeyS": [0, 1],
-                            "KeyD": [1, 0],
-                            "KeyQ": [-1, -1],
-                            "KeyE": [1, -1],
-                            "KeyZ": [-1, 1],
-                            "KeyX": [1, 1]
-                        };
-                        const currentVector = vector[key];
-                        const abstractPosition = [this.you.x + currentVector[0], this.you.y + currentVector[1]];
-                        if (abstractPosition[0] < 0 || abstractPosition[0] > 9) {
-                            currentVector[0] = 0;
-                        }
-                        if (abstractPosition[1] < 0 || abstractPosition[1] > 5) {
-                            currentVector[1] = 0;
-                        }
-                        if (JSON.stringify(abstractPosition) != "[0,5]" && JSON.stringify(abstractPosition) != "[9,3]") {
-                            this.you.x += currentVector[0];
-                            this.you.y += currentVector[1];
-                            let dangerous = this.checkIfDangerous();
-                            if (!dangerous) {
-                                let[bombs,sound] = this.countBombs();
-                                this.message = sound + " [" + bombs + "]"
-                            }
-                        }
-                    } catch (error) {}
-                    ;
+                    }
                 }
             },
 
             mounted() {
                 this.generateField();
                 this.generateMarkedField();
+                
                 const buttons = document.querySelectorAll(".button");
-                buttons.forEach( (button) => {
-                    button.onclick = () => {
-                        this.selectButton(button);
-                    }
-                    ;
-                }
-                );
-                const littleCells = document.querySelectorAll(".little-cell");
-                littleCells.forEach( (cell) => {
-                    cell.onclick = () => {
-                        this.markCell(cell);
-                    }
-                    ;
-                }
-                );
+                buttons.forEach(button => {
+                    button.onclick = () => this.selectButton(button);
+                });
+
                 document.addEventListener("keydown", this.move);
             }
-
         });
 
-        app.component("move", {
-
-            data() {
-                return {
-                };
-            },
-
-            props: ["name"],
-
-            template: `
-            <div class = "move">
-                <div class = "move-picture"></div>
-                <div class = "move-name">
-                    {{ name }}
-                </div>
-            </div>`
-
-        })
-
-        //ЛОГИКА
-
         app.mount('#app');
-
-        //КОНЕЦ ЛОГИКИ
     </script>
 </body>
 </html>
