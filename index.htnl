@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра-головоломка</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Verdana;
+            font-variant: small-caps;
+            font-size: 14pt;
+            background-color: rgb(19, 19, 21);
+            color: rgba(240, 248, 255, 0.851);
+        }
+
+        /* Контейнер для адаптивности */
+        #game-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        #left-container {
+            flex: 1;
+            min-width: 500px;
+            max-width: 1000px;
+        }
+
+        #right-container {
+            flex: 0 0 auto;
+            min-width: 300px;
+        }
+
+        #field {
+            background-image: url("https://i.ibb.co/zJ4msXv/1.png");
+            background-size: cover;
+            background-position: center;
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: 100%;
+            max-width: 1000px;
+            height: 900px;
+            border: 2px solid rgb(10, 10, 10);
+            outline: 4px solid rgb(53, 51, 56);
+            display: block;
+        }
+
+        .cell {
+            width: 10%;
+            height: 150px;
+            border: 1px solid RGBA(0, 0, 0, 0.4);
+            background-repeat: no-repeat;
+            box-sizing: border-box;
+        }
+
+        #character-wrapper {
+            position: relative;
+            bottom: 75px;
+        }
+
+        #character {
+            height: 150px;
+            width: 100px;
+            position: absolute;
+            background-image: url("https://i.ibb.co/bMn5drn8/image.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .move {
+            position: relative;
+            padding: 0;
+            margin: 0;
+        }
+
+        .move-picture {
+            height: 150px;
+            width: 100px;
+        }
+
+        .move-name {
+            position: absolute;
+            font-size: 11px;
+            bottom: 43px;
+            left: 4px;
+            width: 92px;
+            text-align: center;
+            background-color: RGBA(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 0 3px 1px 3px;
+            margin: 0;
+            color: black;
+            word-break: break-word;
+            box-sizing: border-box;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: rgb(57, 57, 69);
+            padding: 10px;
+            border: 2px solid rgb(0, 0, 0);
+            outline: 4px solid rgb(38, 37, 40);
+            text-align: center;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #buttons {
+            text-align: center;
+        }
+
+        .checked {
+            background-color: rgb(100, 100, 113);
+        }
+
+        #sign-field {
+            border-collapse: collapse;
+            table-layout: fixed;
+            text-align: center;
+            background-color: rgb(100, 100, 113);
+            color: black;
+            margin: 10px auto;
+        }
+
+        .little-cell {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 0.5px solid RGBA(0, 0, 0, 0.7);
+            cursor: pointer;
+        }
+
+        .free {
+            background-color: RGBA(255, 255, 255, 0.25);
+        }
+
+        .little-move {
+            background-color: rgba(255, 255, 255, 0.668);
+        }
+
+        .bomb {
+            background-color: rgba(255, 0, 0, 0.23)
+        }
+
+        .header {
+            font-size: 16pt;
+            font-weight: bold;
+        }
+
+        #chat {
+            margin-bottom: 20px;
+        }
+
+        #replay-button {
+            padding: 10px;
+            background-color: rgb(57, 57, 69);
+            border: 2px solid rgb(0, 0, 0);
+            outline: 4px solid rgb(38, 37, 40);
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #full-health, #half-health, #empty-health {
+            height: 50px;
+            width: 50px;
+            background-size: 50px 50px;
+            margin: 0 auto;
+        }
+
+        #full-health {
+            background-image: url("https://via.placeholder.com/50/00ff00/000000?text=♥");
+        }
+
+        #half-health {
+            background-image: url("https://via.placeholder.com/50/ffff00/000000?text=♥");
+        }
+
+        #empty-health {
+            background-image: url("https://via.placeholder.com/50/ff0000/000000?text=♥");
+        }
+
+        #chat {
+            width: 100%;
+            max-width: 550px;
+            border: 2px solid rgb(0, 0, 0);
+            outline: 4px solid rgb(38, 37, 40);
+            background-color: rgb(32, 32, 39);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #counter {
+            margin-top: 10px;
+            margin-right: 5px;
+            display: inline-block;
+            padding: 10px 10px 10px 0;
+        }
+
+        a {
+            color: rgba(240, 248, 255, 0.851);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        #to-main-page {
+            margin-bottom: 25px;
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            #game-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            #left-container, #right-container {
+                min-width: 100%;
+                width: 100%;
+            }
+            
+            #field {
+                height: 600px;
+            }
+            
+            .cell {
+                height: 100px;
+            }
+            
+            #character {
+                height: 100px;
+                width: 66px;
+            }
+            
+            #character-wrapper {
+                bottom: 50px;
+            }
+            
+            .move-picture {
+                height: 100px;
+                width: 66px;
+            }
+            
+            .move-name {
+                bottom: 28px;
+                left: 2px;
+                width: 62px;
+                font-size: 9px;
+            }
+            
+            body {
+                font-size: 12pt;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="to-main-page">
+            <a href="#">← На главную</a>
+        </div>
+        
+        <div id="game-container">
+            <div id="left-container">
+                <div id="field">
+                    <div id="character-wrapper">
+                        <div id="character"></div>
+                    </div>
+                    <!-- Игровое поле будет генерироваться Vue.js -->
+                </div>
+            </div>
+            
+            <div id="right-container">
+                <div id="chat">
+                    <div class="header">Сообщения:</div>
+                    <div id="message">{{ message }}</div>
+                </div>
+                
+                <div id="health">
+                    <div class="header">Здоровье:</div>
+                    <div v-if="lifes >= 1" id="full-health"></div>
+                    <div v-else-if="lifes >= 0.5" id="half-health"></div>
+                    <div v-else id="empty-health"></div>
+                </div>
+                
+                <div id="counter">
+                    <div class="header">Побед: {{ wins }}</div>
+                </div>
+                
+                <div id="buttons">
+                    <div class="button">1</div>
+                    <div class="button">2</div>
+                    <div class="button">3</div>
+                    <div class="button">Переход</div>
+                    <div class="button">Мина</div>
+                    <div class="button">Очистить</div>
+                </div>
+                
+                <div id="sign-field">
+                    <div class="header">Карта:</div>
+                    <!-- Мини-карта будет генерироваться Vue.js -->
+                </div>
+                
+                <div id="replay-button" @click="replay">Перезапуск</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // ИМПОРТЫ
+        import {createApp} from "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js"
+
+        //КОМПОНЕНТА
+
+        const app = createApp({
+
+            data() {
+                return {
+                    you: {
+                        x: 0,
+                        y: 0
+                    },
+                    field: [],
+                    markedField: [],
+                    selectedButton: null,
+                    lifes: 1,
+                    wins: 0,
+                    message: "Поле обновлено. Будьте осторожнее!",
+                    isEnd: false,
+                    isWin: false
+                };
+            },
+
+            methods: {
+
+                replay() {
+                    this.lifes = 1;
+                    this.generateField();
+                    this.generateMarkedField();
+                    document.querySelector("#field").style.background = "url('https://i.ibb.co/zJ4msXv/1.png')";
+                    this.you = {
+                        x: 0,
+                        y: 0
+                    };
+                    if (this.isEnd) {
+                        this.message = "Пожалуйста, не падайте больше."
+                    } else
+                        this.message = "Ура! Следующая карта...";
+                    this.isEnd = false;
+                    this.isWin = false;
+                    const littleCells = [...document.querySelectorAll(".little-cell")];
+                    littleCells.forEach( (cell) => {
+                        cell.className = "little-cell";
+                        cell.innerHTML = "";
+                    }
+                    );
+                    const cells = [...document.querySelectorAll(".cell")];
+                    cells.forEach( (cell) => {
+                        cell.className = "cell";
+                    }
+                    );
+                },
+
+                countBombs() {
+                    let count = 0;
+                    let chance;
+                    let alert = false;
+                    const field = [...document.querySelectorAll(".cell")]
+                    for (let i of [-1, 0, 1]) {
+                        for (let j of [-1, 0, 1]) {
+                            try {
+                                if (this.field[this.you.y + i][this.you.x + j] == 1) {
+                                    count++;
+                                    chance = Math.random() * 100;
+                                    if (chance <= 10 && !alert) {
+                                        let alertPosition = (this.you.y + i) * 10 + this.you.x + j;
+                                        field[alertPosition].style.backgroundImage = "url('alert.png')";
+                                        alert = true;
+                                        setTimeout( () => {
+                                            field[alertPosition].style.backgroundImage = "none";
+                                        }
+                                        , 2500);
+                                    }
+                                }
+                            } catch (error) {}
+                            ;
+                        }
+                    }
+                    const scenarios = ["Вы ничего не слышите.", "едва различимый", "тихий", "приглушённый", "громкий", "очень громкий"];
+                    let sound;
+                    if (count == 0) {
+                        sound = scenarios[0];
+                    } else if (count > 0 && count < 5) {
+                        sound = "Вы слышите " + scenarios[count] + " звук осыпающихся камней."
+                    } else {
+                        sound = "Вы слышите " + scenarios[5] + " звук осыпающихся камней."
+                    }
+                    return [count, sound];
+                },
+
+                checkIfDangerous() {
+                    if (this.field[this.you.y][this.you.x] == 1) {
+                        if (this.lifes == 1) {
+                            this.message = "Вы наступили на опасную клетку! Будьте осторожнее."
+                        } else {
+                            this.isEnd = true;
+                            this.message = "Вы наступили на опасную клетку и упали!"
+                            document.querySelector("#field").style.background = "black";
+                        }
+                        this.lifes--;
+                        return true;
+                    }
+                    return false;
+                },
+
+                checkIfWin() {
+                    for (let i in this.field) {
+                        for (let j in this.field[i]) {
+                            if (this.field[i][j] != this.markedField[i][j]) {
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                },
+
+                selectButton(button) {
+                    if (this.selectedButton != button && this.selectedButton != null) {
+                        this.selectedButton.className = "button unchecked";
+                    }
+                    this.selectedButton = button;
+                    this.selectedButton.className = "button checked";
+                },
+
+                markCell(cell) {
+                    let text;
+                    if (this.selectedButton != null) {
+                        text = this.selectedButton.innerHTML;
+                    } else
+                        return;
+                    const field = [...document.querySelectorAll(".little-cell")]
+                    const cellPosition = field.indexOf(cell);
+                    const cells = [...document.querySelectorAll(".cell")];
+                    let scenarios = [ () => {
+                        cell.innerHTML = "<div style = 'position: relative; top: 5px;'>" + text + "</div>";
+                        cell.className = "little-cell free"
+                        cells[cellPosition].className = "cell free";
+                    }
+                    , () => {
+                        cell.innerHTML = "";
+                        cell.className = "little-cell little-move"
+                        cells[cellPosition].className = "cell little-move";
+                    }
+                    , () => {
+                        cell.innerHTML = "";
+                        cell.className = "little-cell bomb"
+                        cells[cellPosition].className = "cell bomb";
+                    }
+                    , () => {
+                        cell.innerHTML = "";
+                        cell.className = "little-cell";
+                        cells[cellPosition].className = "cell";
+                    }
+                    ];
+                    if (!isNaN(parseInt(text))) {
+                        scenarios[0]();
+                    } else if (text == "Переход") {
+                        scenarios[1]();
+                    } else if (text == "Мина") {
+                        scenarios[2]();
+                    } else {
+                        scenarios[3]();
+                    }
+                    if (text == "Мина") {
+                        this.markedField[Math.trunc(cellPosition / 10)][cellPosition % 10] = 1;
+                        this.isWin = this.checkIfWin();
+                        if (this.isWin) {
+                            if (this.lifes == 1) {
+                                this.wins++;
+                            } else
+                                this.wins += 0.5;
+                        }
+                    } else if (text == "Очистить") {
+                        this.markedField[Math.trunc(cellPosition / 10)][cellPosition % 10] = 0;
+                        this.isWin = this.checkIfWin();
+                    } else if (text == "Переход") {
+                        this.markedField[Math.trunc(cellPosition / 10)][cellPosition % 10] = -1;
+                        this.isWin = this.checkIfWin();
+                    }
+                },
+
+                generateBombsCount() {
+                    return 12 + Math.floor(Math.random() * 3);
+                },
+
+                generateMarkedField() {
+                    this.markedField = [];
+                    let template = [];
+                    for (let i = 0; i < 6; i++) {
+                        for (let j = 0; j < 10; j++) {
+                            template.push(0)
+                        }
+                        this.markedField.push(template);
+                        template = [];
+                    }
+                    this.markedField[5][0] = -1;
+                    this.markedField[3][9] = -1;
+                },
+
+                generateField() {
+                    this.field = [];
+                    for (let i = 0; i < 55; i++)
+                        this.field.push(0);
+                    let bombs = this.generateBombsCount();
+                    while (bombs > 0) {
+                        bombs--;
+                        this.field[Math.floor(Math.random() * 55)] = 1;
+                    }
+                    for (let i = 0; i < 3; i++) {
+                        this.field.splice(0, 0, 0);
+                    }
+                    this.field.splice(49, 0, -1);
+                    this.field.splice(39, 0, -1);
+                    let subarray = [];
+                    for (let i = 0; i < 6; i++)
+                        subarray[i] = this.field.slice((i * 10), (i * 10) + 10);
+                    this.field = subarray;
+                },
+
+                mouseMove(event) {
+                    if (this.isEnd || this.isWin) {
+                        return;
+                    }
+                    let cells = [...document.querySelectorAll(".cell")];
+                    let subarray = [];
+                    for (let i = 0; i < 6; i++)
+                        subarray[i] = cells.slice((i * 10), (i * 10) + 10);
+                    cells = subarray;
+                    for (let i of [-1, 0, 1]) {
+                        for (let j of [-1, 0, 1]) {
+                            try {
+                                if (cells[this.you.y + i][this.you.x + j] == event.target && (JSON.stringify(this.you) != '{"x": 0, "y": 5}' || JSON.stringify(this.you) != '{"x": 9, "y": 3}')) {
+                                    this.you.y += i;
+                                    this.you.x += j;
+                                    let dangerous = this.checkIfDangerous();
+                                    if (!dangerous) {
+                                        let[bombs,sound] = this.countBombs();
+                                        this.message = sound + " [" + bombs + "]"
+                                    }
+                                }
+                            } catch (error) {}
+                            ;
+                        }
+                    }
+                },
+
+                move(event) {
+                    try {
+                        if (this.isEnd || this.isWin) {
+                            return;
+                        }
+                        const key = event.code;
+                        const vector = {
+                            "KeyW": [0, -1],
+                            "KeyA": [-1, 0],
+                            "KeyS": [0, 1],
+                            "KeyD": [1, 0],
+                            "KeyQ": [-1, -1],
+                            "KeyE": [1, -1],
+                            "KeyZ": [-1, 1],
+                            "KeyX": [1, 1]
+                        };
+                        const currentVector = vector[key];
+                        const abstractPosition = [this.you.x + currentVector[0], this.you.y + currentVector[1]];
+                        if (abstractPosition[0] < 0 || abstractPosition[0] > 9) {
+                            currentVector[0] = 0;
+                        }
+                        if (abstractPosition[1] < 0 || abstractPosition[1] > 5) {
+                            currentVector[1] = 0;
+                        }
+                        if (JSON.stringify(abstractPosition) != "[0,5]" && JSON.stringify(abstractPosition) != "[9,3]") {
+                            this.you.x += currentVector[0];
+                            this.you.y += currentVector[1];
+                            let dangerous = this.checkIfDangerous();
+                            if (!dangerous) {
+                                let[bombs,sound] = this.countBombs();
+                                this.message = sound + " [" + bombs + "]"
+                            }
+                        }
+                    } catch (error) {}
+                    ;
+                }
+            },
+
+            mounted() {
+                this.generateField();
+                this.generateMarkedField();
+                const buttons = document.querySelectorAll(".button");
+                buttons.forEach( (button) => {
+                    button.onclick = () => {
+                        this.selectButton(button);
+                    }
+                    ;
+                }
+                );
+                const littleCells = document.querySelectorAll(".little-cell");
+                littleCells.forEach( (cell) => {
+                    cell.onclick = () => {
+                        this.markCell(cell);
+                    }
+                    ;
+                }
+                );
+                document.addEventListener("keydown", this.move);
+            }
+
+        });
+
+        app.component("move", {
+
+            data() {
+                return {
+                };
+            },
+
+            props: ["name"],
+
+            template: `
+            <div class = "move">
+                <div class = "move-picture"></div>
+                <div class = "move-name">
+                    {{ name }}
+                </div>
+            </div>`
+
+        })
+
+        //ЛОГИКА
+
+        app.mount('#app');
+
+        //КОНЕЦ ЛОГИКИ
+    </script>
+</body>
+</html>
